@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# color codes
+NC='\033[0m' # No Color
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+LIGHT_GREEN='\033[1;32m'
+GREEN='\033[0;32m'
+BLACK='\033[107;30m'
+WHITE='\033[1;37m'
+
+# macOS get battery level
+bat=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
+
+# printing one line before the energy clock
+printf "\n\t"
+
+for ((i = 1 ; i <= 100 ; i++)); do
+  if [ $i -eq $bat ]
+  then
+    printf "${BLACK}${i}${NC}  "
+    if [ $(( $i % 10 )) -eq 0 ]
+    then
+      printf "\n\n"
+    fi
+  elif [ $i -ge 1 ] && [ $i -le 20 ]
+  then
+    if [ $i -ge 1 ] && [ $i -le 9 ]
+    then
+      printf "${RED}0${i}  "
+    else
+      printf "${RED}${i}  "
+    fi
+    if [ $(( $i % 10 )) -eq 0 ]
+    then
+      printf "\n\n\t"
+    fi
+  elif [ $i -ge 21 ] && [ $i -le 30 ]
+  then
+    printf "${ORANGE}${i}  "
+    if [ $(( $i % 10 )) -eq 0 ]
+    then
+      printf "\n\n\t"
+    fi
+  elif [ $i -ge 80 ] && [ $i -le 99 ]
+  then
+    printf "${LIGHT_GREEN}${i}  "
+    if [ $(( $i % 10 )) -eq 0 ]
+    then
+      printf "\n\n\t"
+    fi
+  elif [ $i -eq 100 ]
+  then
+    printf "${GREEN}${i}  "
+    printf "\n\n"
+  else
+    printf  "${WHITE}${i}  "
+    if [ $(( $i % 10 )) -eq 0 ]
+    then
+      printf "\n\n\t"
+    fi
+  fi
+done
